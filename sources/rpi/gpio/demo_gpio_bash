@@ -1,0 +1,408 @@
+#!/bin/bash
+
+# 
+ # This file is part of the fr33zik distribution (https://github.com/fr33zik/servo_arm).
+ # Copyright (c) 2019 Jaroslav Jablonicky.
+ # 
+ # This program is free software: you can redistribute it and/or modify  
+ # it under the terms of the GNU General Public License as published by  
+ # the Free Software Foundation, version 3.
+ #
+ # This program is distributed in the hope that it will be useful, but 
+ # WITHOUT ANY WARRANTY; without even the implied warranty of 
+ # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU 
+ # General Public License for more details.
+ #
+ # You should have received a copy of the GNU General Public License 
+ # along with this program. If not, see <http://www.gnu.org/licenses/>.
+ #
+
+gpio mode 1 in
+gpio mode 4 in
+gpio mode 5 in
+gpio mode 6 in
+
+#disc demo 2
+gpio mode 21 in
+gpio mode 22 in
+gpio mode 24 in
+gpio mode 25 in
+
+#select
+gpio mode 0 out
+gpio mode 2 out
+gpio mode 3 out
+
+gpio mode 23 pwm
+gpio mode 26 pwm
+
+gpio pwm 23 0
+gpio pwm 26 0
+
+gpio pwmc 48
+gpio pwmr 8000
+gpio pwm-ms
+gpio pwm 23 600
+gpio pwm 26 600
+
+
+gpio write 0 0
+gpio write 2 0
+gpio write 3 0
+servo="1"
+hz=(600 600 600 600 600)
+left="400"
+right="800"
+min=0
+max=1500
+#while true 
+#do
+
+	inp1=$(gpio read 1)
+	inp4=$(gpio read 4)
+	inp5=$(gpio read 5)
+	inp6=$(gpio read 6)
+	#echo "$inp1 $inp4 $inp5 $inp6"
+
+	echo "start of gpio util demo"
+		#if [ $inp4  -eq 1 ]; then
+			echo "demo1"
+
+			#move base
+
+			#select empty demux channel
+			gpio write 0 0
+			gpio write 2 0
+			gpio write 3 0
+
+			#set width
+			servo=1
+			hz[$servo]="600"
+			gpio pwm 23 ${hz[$servo]}
+			#select servo
+			gpio write 0 1
+			gpio write 2 0
+			gpio write 3 0
+
+
+
+			#better steps ---------------------------
+			#turn off signal
+			#gpio pwm 23 0
+			#select servo
+			#gpio write 0 1
+			#gpio write 2 0
+#			gpio write 3 0
+			#set width
+			#servo=1
+			#hz[$servo]="600"
+			#gpio pwm 23 ${hz[$servo]}
+
+#--------------------------------------------------------------------
+
+			#do step a.k.a walk
+			for i in {600..680..1}
+			do
+				gpio pwm 23 $i
+				#echo "1: 600->$i->400"
+				for j in {$min..$max..1}#delay
+				do
+					:
+				done
+			done
+
+			sleep 1
+			
+			#open
+			gpio write 2 0
+			gpio write 0 0
+			gpio write 3 0
+			sleep 1
+			servo=4
+			hz[$servo]="600"
+			gpio pwm 23 ${hz[$servo]}
+			gpio write 2 0
+			gpio write 0 0
+			gpio write 3 1
+			for i in {600..680..1}
+			do
+				gpio pwm 23 $i
+				for j in {$min..$max..1}
+				do
+					:
+				done
+			done
+			sleep 1
+
+			#prepare to grab
+			gpio write 2 0
+			gpio write 0 0
+			gpio write 3 0
+			sleep 1
+			gpio write 2 0
+			gpio write 0 0
+			gpio write 3 0
+			sleep 1
+			servo=2
+			hz[$servo]="600"
+			gpio pwm 23 ${hz[$servo]}
+			gpio write 2 1
+			gpio write 0 0
+			gpio write 3 0
+			for i in {600..500..-1}
+			do
+				gpio pwm 23 $i
+				for j in {$min..$max..1}
+				do
+					:
+				done
+			done
+			servo=3
+			hz[$servo]="600"
+			gpio pwm 26 ${hz[$servo]}
+			for i in {600..400..-1}
+			do
+				gpio pwm 26 $i
+				#echo "3: 600->$i->700"
+				for j in {$min..$max..1}
+				do
+					:
+				done
+			done
+
+			sleep 1
+
+			sleep 1
+
+			#grab
+			gpio write 2 0
+			gpio write 0 0
+			gpio write 3 0
+			sleep 1
+			servo=4
+			hz[$servo]="680"
+			gpio pwm 23 ${hz[$servo]}
+			gpio write 2 0
+			gpio write 0 0
+			gpio write 3 1
+			for i in {680..500..-1}
+			do
+				gpio pwm 23 $i
+				for j in {$min..$max..1}
+				do
+					:
+				done
+			done
+			sleep 1
+
+			#up we go
+			gpio write 2 0
+			gpio write 0 0
+			gpio write 3 0
+			sleep 1
+			servo=3
+			hz[$servo]="400"
+			gpio pwm 26 ${hz[$servo]}
+			for i in {400..600..1}
+			do
+				gpio pwm 26 $i
+				for j in {$min..$max..1}
+				do
+					:
+				done
+			done
+
+			sleep 1
+			gpio write 2 0
+			gpio write 0 0
+			gpio write 3 0
+			sleep 1
+			servo=2
+			hz[$servo]="500"
+			gpio pwm 23 ${hz[$servo]}
+			gpio write 2 1
+			gpio write 0 0
+			gpio write 3 0
+			for i in {500..600..1}
+			do
+				gpio pwm 23 $i
+				for j in {$min..$max..1}
+				do
+					:
+				done
+			done
+
+
+			sleep 1
+
+			#move it move it
+			gpio write 0 0
+			gpio write 2 0
+			gpio write 3 0
+			sleep 1
+			servo=1
+			hz[$servo]="680"
+			gpio pwm 23 ${hz[$servo]}
+			gpio write 0 1
+			gpio write 2 0
+			gpio write 3 0
+			for i in {680..520..-1}
+			do
+				gpio pwm 23 $i
+				for j in {$min..$max..1}
+				do
+					:
+				done
+			done
+			sleep 1
+
+			#place it down
+			gpio write 0 0
+			gpio write 2 0
+			gpio write 3 0
+			sleep 1
+			servo=2
+			hz[$servo]="600"
+			gpio pwm 23 ${hz[$servo]}
+			gpio write 0 0
+			gpio write 2 1
+			gpio write 3 0
+			for i in {600..500..-1}
+			do
+				gpio pwm 23 $i
+				for j in {$min..$max..1}
+				do
+					:
+				done
+			done
+			
+			sleep 1
+			gpio write 0 0
+			gpio write 2 0
+			gpio write 3 0
+			sleep 1
+			servo=3
+			hz[$servo]="600"
+			gpio pwm 26 ${hz[$servo]}
+			for i in {600..400..-1}
+			do
+				gpio pwm 26 $i
+				for j in {$min..$max..1}
+				do
+					:
+				done
+			done
+			sleep 1
+
+			#let it goooo.....
+			gpio write 0 0
+			gpio write 2 0
+			gpio write 3 0
+			sleep 1
+			servo=4
+			hz[$servo]="500"
+			gpio pwm 23 ${hz[$servo]}
+			gpio write 0 0
+			gpio write 2 0
+			gpio write 3 1
+			for i in {500..680..1}
+			do
+				gpio pwm 23 $i
+				for j in {$min..$max..1}
+				do
+					:
+				done
+			done
+
+			#center model
+			echo "waiting centring"
+
+			sleep 2
+
+			gpio write 0 0
+			gpio write 2 0
+			gpio write 3 0
+			sleep 1
+			servo=3
+			hz[$servo]="400"
+			gpio pwm 26 ${hz[$servo]}
+			for i in {400..600..1}
+			do
+				gpio pwm 26 $i
+				for j in {$min..$max..1}
+				do
+					:
+				done
+			done
+			sleep 1
+			gpio write 0 0
+			gpio write 2 0
+			gpio write 3 0
+			sleep 1
+			servo=2
+			hz[$servo]="500"
+			gpio pwm 23 ${hz[$servo]}
+			gpio write 0 0
+			gpio write 2 1
+			gpio write 3 0
+			for i in {500..600..1}
+			do
+				gpio pwm 23 $i
+				for j in {$min..$max..1}
+				do
+					:
+				done
+			done
+
+			sleep 1
+			gpio write 0 0
+			gpio write 2 0
+			gpio write 3 0
+			sleep 1
+			servo=1
+			hz[$servo]="520"
+			gpio pwm 23 ${hz[$servo]}
+			gpio write 0 1
+			gpio write 2 0
+			gpio write 3 0
+			for i in {520..600..1}
+			do
+				gpio pwm 23 $i
+				for j in {$min..$max..1}
+				do
+					:
+				done
+			done
+
+			sleep 1
+			gpio write 0 0
+			gpio write 2 0
+			gpio write 3 0
+			sleep 1
+			servo=4
+			hz[$servo]="680"
+			gpio pwm 23 ${hz[$servo]}
+			gpio write 0 0
+			gpio write 2 0
+			gpio write 3 1
+			for i in {680..600..-1}
+			do
+				gpio pwm 23 $i
+				for j in {$min..$max..1}
+				do
+					:
+				done
+			done
+		#if [ $inp6  -eq 1 ]; then
+		#	echo "right"
+		#	hz[servo]=$((${hz[servo]} + 1))
+		#	if [ ${hz[servo]} -gt "800" ]; then
+		#		hz[servo]="800"
+		#	fi
+		#fi
+
+gpio pwm 23 0
+gpio pwm 26 0
+		echo "end of demo"
+			#gpio pwm 23 ${hz[servo]}
+#done

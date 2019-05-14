@@ -1,0 +1,24 @@
+# SMCLK je hlavni hodinovy vstup, zde pro nej specifikujeme kmitocet,
+# ktery na FITkitu ma hodnotu 7.3728 MHz...
+NET SMCLK TNM_NET = smclk_pin;
+TIMESPEC TS_smclk_pin = PERIOD smclk_pin 7.3728 MHz;
+# ...a samozrejme mu i priradime pin na FPGA podle schematu k FITkitu.
+NET SMCLK      LOC = P80;
+
+# doplnte mapovani pinu pro ostatni signaly entity
+NET RESET      LOC = P155; 
+############################
+NET OUTPUT<0>  LOC = P28;	# X32
+NET OUTPUT<1>  LOC = P34;	# X34
+NET OUTPUT<2>  LOC = P36;	# X36
+NET OUTPUT<3>  LOC = P39;	# X38
+# Keyboard 4x4
+NET "KIN<0>"   LOC = "P171"  ;
+NET "KIN<1>"   LOC = "P175"  ;
+NET "KIN<2>"   LOC = "P178"  ;
+NET "KIN<3>"   LOC = "P181"  ;
+
+NET "KOUT<0>"  LOC = "P183" | PULLUP ;
+NET "KOUT<1>"  LOC = "P185" | PULLUP ;
+NET "KOUT<2>"  LOC = "P189" | PULLUP ;
+NET "KOUT<3>"  LOC = "P191" | PULLUP ;

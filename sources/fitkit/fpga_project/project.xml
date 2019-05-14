@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project outputprefix="kb">
+
+    <!--  Project description -->
+    <name>Demo - pwm</name>
+    <category>Demo aplikace</category>
+    <author>Jaroslav jablonický</author>
+    <authoremail>xjablo03@stud.fit.vutbr.cz </authoremail>
+    <revision>20090201</revision>
+    <description>ovladani pwm</description>
+
+    <!--  MCU part -->
+    <mcu>
+        <include>mcu/libs/keyboard/package.xml</include>
+        <file>main.c</file>
+    </mcu>
+
+    <!-- FPGA part -->
+   <fpga toplevelentity="pwm" ucffile="fpga/pwm.ucf" architecture="none">
+  <include>fpga/ctrls/keyboard/package.xml</include> 
+  <file>pwm.vhd</file> 
+    </fpga>
+
+</project>

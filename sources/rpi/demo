@@ -1,0 +1,53 @@
+#!/bin/bash
+
+ # 
+ # This file is part of the fr33zik distribution (https://github.com/fr33zik/servo_arm).
+ # Copyright (c) 2019 Jaroslav Jablonicky.
+ # 
+ # This program is free software: you can redistribute it and/or modify  
+ # it under the terms of the GNU General Public License as published by  
+ # the Free Software Foundation, version 3.
+ #
+ # This program is distributed in the hope that it will be useful, but 
+ # WITHOUT ANY WARRANTY; without even the implied warranty of 
+ # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU 
+ # General Public License for more details.
+ #
+ # You should have received a copy of the GNU General Public License 
+ # along with this program. If not, see <http://www.gnu.org/licenses/>.
+ #
+
+#cycles between demos
+
+servo="1"
+hz=(600 600 600 600 600)
+left="400"
+right="800"
+on=1
+while true 
+do
+
+	inp1=$(gpio read 1)
+	inp4=$(gpio read 4)
+	inp5=$(gpio read 5)
+	inp6=$(gpio read 6)
+	if [ $inp1  -eq 1 ]; then
+		echo "WARNING starting sw pwm."
+		echo "start?"
+		read
+		echo "running"
+		python Desktop/bc/demo_sw_rpigpio.py
+		echo "end of sw demo"
+	elif [ $inp4  -eq 1 ]; then
+		bash Desktop/bc/demo_gpio_bash
+	elif [ $inp5  -eq 1 ]; then
+		sudo pigpiod
+		python Desktop/bc/demo_pigpio.py
+		sudo killall pigpiod
+	elif [ $inp6  -eq 1 ]; then
+		:
+	fi
+
+	sleep 1
+
+done
